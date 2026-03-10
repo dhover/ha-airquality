@@ -22,7 +22,7 @@ airquality_health:
 
 ## Sensors
 
-- `sensor.pm10_daggemiddelde` (PM10 daily average)
-- `sensor.pm2_5_daggemiddelde` (PM2.5 daily average)
-- `sensor.pm10_norm_overschrijdingen` (PM10 limit exceedances)
-- `sensor.pm2_5_norm_overschrijdingen` (PM2.5 limit exceedances)
+- `sensor.air_quality_health_pm10_daily_average`
+- `sensor.air_quality_health_pm2_5_dialy_average`
+- `sensor.air_quality_health_pm10_limit_exceedances`
+- `sensor.air_quality_health_pm2_5_limit_exceedances`
