@@ -48,8 +48,10 @@ class AirQualityHealthCoordinator(DataUpdateCoordinator[None]):
         self._unsubscribers: list[Any] = []
         self._data: dict[str, Any] = {
             "date": dt_util.now().date().isoformat(),
-            "pm10_samples": [],
-            "pm25_samples": [],
+            "pm10_sum": 0.0,
+            "pm10_count": 0,
+            "pm25_sum": 0.0,
+            "pm25_count": 0,
             "last_pm10_avg": None,
             "last_pm25_avg": None,
             "pm10_exceedances": 0,
@@ -61,8 +63,6 @@ class AirQualityHealthCoordinator(DataUpdateCoordinator[None]):
         stored = await self._store.async_load()
         if isinstance(stored, dict):
             self._data.update(stored)
-        self._ensure_storage_shape()
-        self._prune_old_samples()
 
         today = dt_util.now().date().isoformat()
         if self._data["date"] != today:
@@ -133,40 +133,10 @@ class AirQualityHealthCoordinator(DataUpdateCoordinator[None]):
             self._data["pm25_exceedances"] += 1
 
         self._data["date"] = new_date
-        self._data["pm10_samples"] = []
-        self._data["pm25_samples"] = []
-
-    @callback
-    def _ensure_storage_shape(self) -> None:
-        # Migrate older storage shape (sum/count based) to sample-list shape.
-        if not isinstance(self._data.get("pm10_samples"), list):
-            self._data["pm10_samples"] = []
-        if not isinstance(self._data.get("pm25_samples"), list):
-            self._data["pm25_samples"] = []
-        # Drop deprecated keys from previous rolling/exceedance logic.
-        self._data.pop("pm10_incremented_today", None)
-        self._data.pop("pm25_incremented_today", None)
-        self._data.pop("pm10_exceeded_today", None)
-        self._data.pop("pm25_exceeded_today", None)
-
-    @callback
-    def _today_start_ts(self) -> float:
-        start_local = dt_util.start_of_local_day(dt_util.now())
-        return dt_util.as_utc(start_local).timestamp()
-
-    @callback
-    def _prune_old_samples(self, now_ts: float | None = None) -> None:
-        cutoff = self._today_start_ts() if now_ts is None else now_ts
-        self._data["pm10_samples"] = [
-            sample
-            for sample in self._data["pm10_samples"]
-            if isinstance(sample, dict) and sample.get("ts", 0) >= cutoff
-        ]
-        self._data["pm25_samples"] = [
-            sample
-            for sample in self._data["pm25_samples"]
-            if isinstance(sample, dict) and sample.get("ts", 0) >= cutoff
-        ]
+        self._data["pm10_sum"] = 0.0
+        self._data["pm10_count"] = 0
+        self._data["pm25_sum"] = 0.0
+        self._data["pm25_count"] = 0
 
     @callback
     def _add_sample_for_entity(self, entity_id: str) -> None:
@@ -182,47 +152,26 @@ class AirQualityHealthCoordinator(DataUpdateCoordinator[None]):
         except (TypeError, ValueError):
             return
 
-        now_ts = dt_util.utcnow().timestamp()
-        cutoff = self._today_start_ts()
-
         if entity_id == self.cfg.pm10_entity:
-            self._data["pm10_samples"].append({"ts": now_ts, "value": value})
-            self._data["pm10_samples"] = [
-                sample
-                for sample in self._data["pm10_samples"]
-                if isinstance(sample, dict) and sample.get("ts", 0) >= cutoff
-            ]
+            self._data["pm10_sum"] += value
+            self._data["pm10_count"] += 1
         elif entity_id == self.cfg.pm25_entity:
-            self._data["pm25_samples"].append({"ts": now_ts, "value": value})
-            self._data["pm25_samples"] = [
-                sample
-                for sample in self._data["pm25_samples"]
-                if isinstance(sample, dict) and sample.get("ts", 0) >= cutoff
-            ]
+            self._data["pm25_sum"] += value
+            self._data["pm25_count"] += 1
 
     @property
     def current_pm10_average(self) -> float | None:
-        values = [
-            sample["value"]
-            for sample in self._data["pm10_samples"]
-            if isinstance(sample, dict)
-            and isinstance(sample.get("value"), (int, float))
-        ]
-        if not values:
+        count = self._data["pm10_count"]
+        if count <= 0:
             return None
-        return round(sum(values) / len(values), 2)
+        return round(self._data["pm10_sum"] / count, 2)
 
     @property
     def current_pm25_average(self) -> float | None:
-        values = [
-            sample["value"]
-            for sample in self._data["pm25_samples"]
-            if isinstance(sample, dict)
-            and isinstance(sample.get("value"), (int, float))
-        ]
-        if not values:
+        count = self._data.get("pm25_count", 0)
+        if count <= 0:
             return None
-        return round(sum(values) / len(values), 2)
+        return round(self._data["pm25_sum"] / count, 2)
 
     @property
     def pm10_exceedances(self) -> int:
