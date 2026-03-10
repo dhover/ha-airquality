@@ -161,14 +161,14 @@ class AirQualityHealthCoordinator(DataUpdateCoordinator[None]):
 
     @property
     def current_pm10_average(self) -> float | None:
-        count = self._data["pm10_count"]
+        count = self._data.get("pm10_count",0)
         if count <= 0:
             return None
         return round(self._data["pm10_sum"] / count, 2)
 
     @property
     def current_pm25_average(self) -> float | None:
-        count = self._data.get("pm25_count", 0)
+        count = self._data.get("pm25_count",0)
         if count <= 0:
             return None
         return round(self._data["pm25_sum"] / count, 2)
