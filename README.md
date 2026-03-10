@@ -1,14 +1,14 @@
 # Air Quality Health
 
-Home Assistant custom integratie om per kalenderdag het gemiddelde van PM10 en PM2.5 te berekenen en normoverschrijdingen te tellen.
+Home Assistant custom integration to calculate the daily average of PM10 and PM2.5 per calendar day and count limit exceedances.
 
-## Configureren via UI (aanbevolen)
+## Configure via UI (recommended)
 
-Ga naar `Instellingen -> Apparaten & Diensten -> Integratie toevoegen` en kies **Air Quality Health**.
+Go to `Settings -> Devices & Services -> Add Integration` and choose **Air Quality Health**.
 
-## Configuratie
+## Configuration
 
-Voeg dit toe aan `configuration.yaml`:
+Add this to `configuration.yaml`:
 
 ```yaml
 airquality_health:
@@ -18,9 +18,9 @@ airquality_health:
   pm25_norm: 15
 ```
 
-`pm10_norm` en `pm25_norm` zijn optioneel. Standaardwaarden zijn respectievelijk `45` en `15`.
+`pm10_norm` and `pm25_norm` are optional. Default values are `45` and `15` respectively.
 
-## Sensoren
+## Sensors
 
 - `sensor.pm10_daggemiddelde`
 - `sensor.pm2_5_daggemiddelde`
