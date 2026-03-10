@@ -29,5 +29,21 @@
         }
       }
     }
+  },
+  "entity": {
+    "sensor": {
+      "pm10_daily_avg": {
+        "name": "PM10 Daily Average"
+      },
+      "pm25_daily_avg": {
+        "name": "PM2.5 Daily Average"
+      },
+      "pm10_exceedance_count": {
+        "name": "PM10 Limit Exceedances"
+      },
+      "pm25_exceedance_count": {
+        "name": "PM2.5 Limit Exceedances"
+      }
+    }
   }
 }

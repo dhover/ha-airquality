@@ -25,7 +25,7 @@ class HealthSensorDescription(SensorEntityDescription):
 SENSORS: tuple[HealthSensorDescription, ...] = (
     HealthSensorDescription(
         key="pm10_daily_avg",
-        name="PM10 Daggemiddelde",
+        translation_key="pm10_daily_avg",
         icon="mdi:chart-line",
         native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
         state_class=SensorStateClass.MEASUREMENT,
@@ -33,7 +33,7 @@ SENSORS: tuple[HealthSensorDescription, ...] = (
     ),
     HealthSensorDescription(
         key="pm25_daily_avg",
-        name="PM2.5 Daggemiddelde",
+        translation_key="pm25_daily_avg",
         icon="mdi:chart-line",
         native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
         state_class=SensorStateClass.MEASUREMENT,
@@ -41,14 +41,14 @@ SENSORS: tuple[HealthSensorDescription, ...] = (
     ),
     HealthSensorDescription(
         key="pm10_exceedance_count",
-        name="PM10 Norm Overschrijdingen",
+        translation_key="pm10_exceedance_count",
         icon="mdi:counter",
         state_class=SensorStateClass.TOTAL_INCREASING,
         value_fn=lambda c: c.pm10_exceedances,
     ),
     HealthSensorDescription(
         key="pm25_exceedance_count",
-        name="PM2.5 Norm Overschrijdingen",
+        translation_key="pm25_exceedance_count",
         icon="mdi:counter",
         state_class=SensorStateClass.TOTAL_INCREASING,
         value_fn=lambda c: c.pm25_exceedances,
