@@ -1,0 +1,33 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Luchtkwaliteit Gezondheid",
+        "description": "Configureer PM10- en PM2.5-entiteiten en hun dagelijkse normdrempels.",
+        "data": {
+          "pm10_entity": "PM10-entiteit",
+          "pm25_entity": "PM2.5-entiteit",
+          "pm10_norm": "PM10-norm",
+          "pm25_norm": "PM2.5-norm"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "Deze combinatie van PM10/PM2.5-entiteiten is al geconfigureerd."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Luchtkwaliteit Gezondheid",
+        "description": "Werk PM10- en PM2.5-entiteiten en hun dagelijkse normdrempels bij.",
+        "data": {
+          "pm10_entity": "PM10-entiteit",
+          "pm25_entity": "PM2.5-entiteit",
+          "pm10_norm": "PM10-norm",
+          "pm25_norm": "PM2.5-norm"
+        }
+      }
+    }
+  }
+}

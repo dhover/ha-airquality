@@ -1,0 +1,33 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Air Quality Health",
+        "description": "Configure PM10 and PM2.5 entities and their daily norm thresholds.",
+        "data": {
+          "pm10_entity": "PM10 entity",
+          "pm25_entity": "PM2.5 entity",
+          "pm10_norm": "PM10 norm",
+          "pm25_norm": "PM2.5 norm"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "This PM10/PM2.5 entity combination is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Air Quality Health",
+        "description": "Update PM10 and PM2.5 entities and their daily norm thresholds.",
+        "data": {
+          "pm10_entity": "PM10 entity",
+          "pm25_entity": "PM2.5 entity",
+          "pm10_norm": "PM10 norm",
+          "pm25_norm": "PM2.5 norm"
+        }
+      }
+    }
+  }
+}
