@@ -1,7 +1,7 @@
 {
   "domain": "airquality_health",
   "name": "Air Quality Health Norms",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "config_flow": true,
   "documentation": "https://example.invalid/airquality_health",
   "requirements": [],
