@@ -48,10 +48,15 @@ class AirQualityHealthCoordinator(DataUpdateCoordinator[None]):
         self._unsubscribers: list[Any] = []
         self._data: dict[str, Any] = {
             "date": dt_util.now().date().isoformat(),
+            "year": dt_util.now().date().year,
             "pm10_sum": 0.0,
             "pm10_count": 0,
+            "pm10_year_sum": 0.0,
+            "pm10_year_count": 0,
             "pm25_sum": 0.0,
             "pm25_count": 0,
+            "pm25_year_sum": 0.0,
+            "pm25_year_count": 0,
             "last_pm10_avg": None,
             "last_pm25_avg": None,
             "pm10_exceedances": 0,
@@ -67,6 +72,8 @@ class AirQualityHealthCoordinator(DataUpdateCoordinator[None]):
         today = dt_util.now().date().isoformat()
         if self._data["date"] != today:
             await self._rollover(today)
+        else:
+            self._ensure_year(today)
 
         self._unsubscribers.append(
             async_track_state_change_event(
@@ -133,10 +140,22 @@ class AirQualityHealthCoordinator(DataUpdateCoordinator[None]):
             self._data["pm25_exceedances"] += 1
 
         self._data["date"] = new_date
+        self._ensure_year(new_date)
         self._data["pm10_sum"] = 0.0
         self._data["pm10_count"] = 0
         self._data["pm25_sum"] = 0.0
         self._data["pm25_count"] = 0
+
+    @callback
+    def _ensure_year(self, iso_date: str) -> None:
+        new_year = dt_util.parse_date(iso_date).year
+        if self._data.get("year") == new_year:
+            return
+        self._data["year"] = new_year
+        self._data["pm10_year_sum"] = 0.0
+        self._data["pm10_year_count"] = 0
+        self._data["pm25_year_sum"] = 0.0
+        self._data["pm25_year_count"] = 0
 
     @callback
     def _add_sample_for_entity(self, entity_id: str) -> None:
@@ -155,9 +174,13 @@ class AirQualityHealthCoordinator(DataUpdateCoordinator[None]):
         if entity_id == self.cfg.pm10_entity:
             self._data["pm10_sum"] += value
             self._data["pm10_count"] += 1
+            self._data["pm10_year_sum"] += value
+            self._data["pm10_year_count"] += 1
         elif entity_id == self.cfg.pm25_entity:
             self._data["pm25_sum"] += value
             self._data["pm25_count"] += 1
+            self._data["pm25_year_sum"] += value
+            self._data["pm25_year_count"] += 1
 
     @property
     def current_pm10_average(self) -> float | None:
@@ -172,6 +195,20 @@ class AirQualityHealthCoordinator(DataUpdateCoordinator[None]):
         if count <= 0:
             return None
         return round(self._data["pm25_sum"] / count, 2)
+
+    @property
+    def current_pm10_annual_average(self) -> float | None:
+        count = self._data.get("pm10_year_count",0)
+        if count <= 0:
+            return None
+        return round(self._data["pm10_year_sum"] / count, 2)
+
+    @property
+    def current_pm25_annual_average(self) -> float | None:
+        count = self._data.get("pm25_year_count",0)
+        if count <= 0:
+            return None
+        return round(self._data["pm25_year_sum"] / count, 2)
 
     @property
     def pm10_exceedances(self) -> int:

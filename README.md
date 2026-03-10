@@ -23,6 +23,8 @@ airquality_health:
 ## Sensors
 
 - `sensor.air_quality_health_pm10_daily_average`
-- `sensor.air_quality_health_pm2_5_dialy_average`
+- `sensor.air_quality_health_pm2_5_daily_average`
+- `sensor.air_quality_health_pm10_annual_average`
+- `sensor.air_quality_health_pm2_5_annual_average`
 - `sensor.air_quality_health_pm10_limit_exceedances`
 - `sensor.air_quality_health_pm2_5_limit_exceedances`

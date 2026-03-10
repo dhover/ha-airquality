@@ -40,6 +40,22 @@ SENSORS: tuple[HealthSensorDescription, ...] = (
         value_fn=lambda c: c.current_pm25_average,
     ),
     HealthSensorDescription(
+        key="pm10_annual_avg",
+        translation_key="pm10_annual_avg",
+        icon="mdi:chart-line",
+        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda c: c.current_pm10_annual_average,
+    ),
+    HealthSensorDescription(
+        key="pm25_annual_avg",
+        translation_key="pm25_annual_avg",
+        icon="mdi:chart-line",
+        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda c: c.current_pm25_annual_average,
+    ),
+    HealthSensorDescription(
         key="pm10_exceedance_count",
         translation_key="pm10_exceedance_count",
         icon="mdi:counter",

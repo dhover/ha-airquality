@@ -38,6 +38,12 @@
       "pm25_daily_avg": {
         "name": "PM2.5 Daggemiddelde"
       },
+      "pm10_annual_avg": {
+        "name": "PM10 Jaargemiddelde"
+      },
+      "pm25_annual_avg": {
+        "name": "PM2.5 Jaargemiddelde"
+      },
       "pm10_exceedance_count": {
         "name": "PM10 Norm Overschrijdingen"
       },
