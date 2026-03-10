@@ -4,7 +4,7 @@ Home Assistant custom integration to calculate the daily average of PM10 and PM2
 
 ## Configure via UI (recommended)
 
-Go to `Settings -> Devices & Services -> Add Integration` and choose **Air Quality Health**.
+Go to `Settings -> Devices & Services -> Add Integration` and choose **Air Quality Health Norms**.
 
 ## Configuration
 
@@ -22,7 +22,7 @@ airquality_health:
 
 ## Sensors
 
-- `sensor.pm10_daggemiddelde`
-- `sensor.pm2_5_daggemiddelde`
-- `sensor.pm10_norm_overschrijdingen`
-- `sensor.pm2_5_norm_overschrijdingen`
+- `sensor.pm10_daggemiddelde` (PM10 daily average)
+- `sensor.pm2_5_daggemiddelde` (PM2.5 daily average)
+- `sensor.pm10_norm_overschrijdingen` (PM10 limit exceedances)
+- `sensor.pm2_5_norm_overschrijdingen` (PM2.5 limit exceedances)
