@@ -19,6 +19,13 @@ from .coordinator import AirQualityHealthCoordinator
 
 @dataclass(frozen=True, kw_only=True)
 class HealthSensorDescription(SensorEntityDescription):
+    """Describes a health sensor entity."""
+
+    key: str
+    translation_key: str
+    icon: str
+    native_unit_of_measurement: str | None
+    state_class: SensorStateClass | None
     value_fn: Callable[[AirQualityHealthCoordinator], float | int | None]
 
 
@@ -59,6 +66,7 @@ SENSORS: tuple[HealthSensorDescription, ...] = (
         key="pm10_exceedance_count",
         translation_key="pm10_exceedance_count",
         icon="mdi:counter",
+        native_unit_of_measurement=None,
         state_class=SensorStateClass.TOTAL_INCREASING,
         value_fn=lambda c: c.pm10_exceedances,
     ),
@@ -66,6 +74,7 @@ SENSORS: tuple[HealthSensorDescription, ...] = (
         key="pm25_exceedance_count",
         translation_key="pm25_exceedance_count",
         icon="mdi:counter",
+        native_unit_of_measurement=None,
         state_class=SensorStateClass.TOTAL_INCREASING,
         value_fn=lambda c: c.pm25_exceedances,
     ),
@@ -109,10 +118,12 @@ class AirQualityHealthSensor(CoordinatorEntity[AirQualityHealthCoordinator], Sen
 
     @property
     def native_value(self) -> float | int | None:
+        """Return the native value of the sensor."""
         return self.entity_description.value_fn(self.coordinator)
 
     @property
     def extra_state_attributes(self) -> dict[str, str | float]:
+        """Return extra state attributes for the sensor."""
         return {
             "tracked_date": self.coordinator.tracked_date,
             "pm10_norm": self.coordinator.pm10_norm,

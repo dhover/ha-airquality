@@ -111,10 +111,6 @@ class AirQualityHealthCoordinator(DataUpdateCoordinator[None]):
         if new_state is None:
             return
 
-        today = dt_util.now().date().isoformat()
-        if self._data["date"] != today:
-            self._rollover_in_memory(today)
-
         self._add_value(entity_id, new_state.state)
         self.hass.async_create_task(self._store.async_save(self._data))
         self.async_set_updated_data(None)
