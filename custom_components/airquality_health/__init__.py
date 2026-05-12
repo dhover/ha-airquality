@@ -5,6 +5,7 @@ from __future__ import annotations
 import voluptuous as vol
 
 from homeassistant import config_entries
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.typing import ConfigType
@@ -18,6 +19,8 @@ from .const import (
     PLATFORMS,
 )
 from .coordinator import AirQualityHealthCoordinator, parse_config
+
+AirQualityHealthConfigEntry = ConfigEntry[AirQualityHealthCoordinator]
 
 CONFIG_SCHEMA = vol.Schema(
     {
@@ -36,7 +39,6 @@ CONFIG_SCHEMA = vol.Schema(
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """Set up integration and import YAML config if present."""
-    hass.data.setdefault(DOMAIN, {})
     if DOMAIN not in config:
         return True
 
@@ -50,27 +52,26 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     return True
 
 
-async def async_setup_entry(hass: HomeAssistant, entry: config_entries.ConfigEntry) -> bool:
+async def async_setup_entry(hass: HomeAssistant, entry: AirQualityHealthConfigEntry) -> bool:
     """Set up from config entry."""
     entry.async_on_unload(entry.add_update_listener(_async_update_listener))
     cfg = parse_config({**entry.data, **entry.options})
     coordinator = AirQualityHealthCoordinator(hass, cfg, instance_id=entry.entry_id)
     await coordinator.async_initialize()
 
-    hass.data[DOMAIN][entry.entry_id] = coordinator
+    entry.runtime_data = coordinator
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True
 
 
-async def async_unload_entry(hass: HomeAssistant, entry: config_entries.ConfigEntry) -> bool:
+async def async_unload_entry(hass: HomeAssistant, entry: AirQualityHealthConfigEntry) -> bool:
     """Unload config entry."""
     unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
     if not unload_ok:
         return False
 
-    coordinator: AirQualityHealthCoordinator | None = hass.data[DOMAIN].pop(entry.entry_id, None)
-    if coordinator is not None:
-        await coordinator.async_shutdown()
+    coordinator = entry.runtime_data
+    await coordinator.async_shutdown()
 
     return True
 

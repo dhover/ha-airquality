@@ -83,11 +83,11 @@ SENSORS: tuple[HealthSensorDescription, ...] = (
 
 async def async_setup_entry(
     hass: HomeAssistant,
-    entry: ConfigEntry,
+    entry: ConfigEntry[AirQualityHealthCoordinator],
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up sensors."""
-    coordinator: AirQualityHealthCoordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator: AirQualityHealthCoordinator = entry.runtime_data
     entities = [
         AirQualityHealthSensor(coordinator, description, entry.entry_id) for description in SENSORS
     ]
