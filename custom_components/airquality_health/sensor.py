@@ -7,7 +7,7 @@ from typing import Callable
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.components.sensor import SensorEntity, SensorEntityDescription, SensorStateClass
-from homeassistant.const import CONCENTRATION_MICROGRAMS_PER_CUBIC_METER
+from homeassistant.const import UnitOfDensity
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -34,7 +34,7 @@ SENSORS: tuple[HealthSensorDescription, ...] = (
         key="pm10_daily_avg",
         translation_key="pm10_daily_avg",
         icon="mdi:chart-line",
-        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        native_unit_of_measurement=UnitOfDensity.MICROGRAMS_PER_CUBIC_METER,
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda c: c.current_pm10_average,
     ),
@@ -42,7 +42,7 @@ SENSORS: tuple[HealthSensorDescription, ...] = (
         key="pm25_daily_avg",
         translation_key="pm25_daily_avg",
         icon="mdi:chart-line",
-        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        native_unit_of_measurement=UnitOfDensity.MICROGRAMS_PER_CUBIC_METER,
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda c: c.current_pm25_average,
     ),
@@ -50,7 +50,7 @@ SENSORS: tuple[HealthSensorDescription, ...] = (
         key="pm10_annual_avg",
         translation_key="pm10_annual_avg",
         icon="mdi:chart-line",
-        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        native_unit_of_measurement=UnitOfDensity.MICROGRAMS_PER_CUBIC_METER,
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda c: c.current_pm10_annual_average,
     ),
@@ -58,7 +58,7 @@ SENSORS: tuple[HealthSensorDescription, ...] = (
         key="pm25_annual_avg",
         translation_key="pm25_annual_avg",
         icon="mdi:chart-line",
-        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+        native_unit_of_measurement=UnitOfDensity.MICROGRAMS_PER_CUBIC_METER,
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda c: c.current_pm25_annual_average,
     ),
