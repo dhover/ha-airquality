@@ -60,8 +60,8 @@ class AirQualityHealthConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Required(CONF_PM25_ENTITY): selector.EntitySelector(
                     selector.EntitySelectorConfig(domain="sensor")
                 ),
-                vol.Optional(CONF_PM10_NORM, default=DEFAULT_PM10_NORM): vol.Coerce(float),
-                vol.Optional(CONF_PM25_NORM, default=DEFAULT_PM25_NORM): vol.Coerce(float),
+                vol.Optional(CONF_PM10_NORM, default=DEFAULT_PM10_DAILY_NORM): vol.Coerce(float),
+                vol.Optional(CONF_PM25_NORM, default=DEFAULT_PM25_DAILY_NORM): vol.Coerce(float),
             }
         )
 

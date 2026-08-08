@@ -2,21 +2,9 @@
 
 Home Assistant custom integration to calculate the daily average of PM10 and PM2.5 per calendar day and count limit exceedances.
 
-## Configure via UI (recommended)
+## Configure via UI
 
 Go to `Settings -> Devices & Services -> Add Integration` and choose **Air Quality Health Norms**.
-
-## Configuration
-
-Add this to `configuration.yaml`:
-
-```yaml
-airquality_health:
-  pm10_entity: sensor.pm10
-  pm25_entity: sensor.pm25
-  pm10_norm: 45
-  pm25_norm: 15
-```
 
 `pm10_norm` and `pm25_norm` are optional. Default values are `45` and `15` respectively.
 

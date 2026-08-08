@@ -232,6 +232,6 @@ def parse_config(raw_cfg: dict[str, Any]) -> IntegrationConfig:
     return IntegrationConfig(
         pm10_entity=str(raw_cfg[CONF_PM10_ENTITY]),
         pm25_entity=str(raw_cfg[CONF_PM25_ENTITY]),
-        pm10_norm=float(raw_cfg.get(CONF_PM10_NORM, DEFAULT_PM10_NORM)),
-        pm25_norm=float(raw_cfg.get(CONF_PM25_NORM, DEFAULT_PM25_NORM)),
+        pm10_norm=float(raw_cfg.get(CONF_PM10_NORM, DEFAULT_PM10_DAILY_NORM)),
+        pm25_norm=float(raw_cfg.get(CONF_PM25_NORM, DEFAULT_PM25_DAILY_NORM)),
     )

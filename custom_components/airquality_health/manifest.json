@@ -3,7 +3,7 @@
   "name": "Air Quality Health Norms",
   "version": "1.0.9",
   "config_flow": true,
-  "documentation": "https://example.invalid/airquality_health",
+  "documentation": "https://github.com/dhover/ha-airquality",
   "requirements": [],
   "codeowners": [],
   "iot_class": "local_push"
