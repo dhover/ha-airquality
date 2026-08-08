@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import TypeAlias
+
 import voluptuous as vol
 
 from homeassistant import config_entries
@@ -20,7 +22,7 @@ from .const import (
 )
 from .coordinator import AirQualityHealthCoordinator, parse_config
 
-AirQualityHealthConfigEntry = ConfigEntry[AirQualityHealthCoordinator]
+AirQualityHealthConfigEntry: TypeAlias = ConfigEntry[AirQualityHealthCoordinator]
 
 CONFIG_SCHEMA = vol.Schema(
     {

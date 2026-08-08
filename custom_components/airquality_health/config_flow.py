@@ -15,8 +15,8 @@ from .const import (
     CONF_PM10_NORM,
     CONF_PM25_ENTITY,
     CONF_PM25_NORM,
-    DEFAULT_PM10_NORM,
-    DEFAULT_PM25_NORM,
+    DEFAULT_PM10_DAILY_NORM,
+    DEFAULT_PM25_DAILY_NORM,
     DOMAIN,
 )
 from .coordinator import parse_config

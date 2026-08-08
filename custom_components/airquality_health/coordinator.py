@@ -17,8 +17,8 @@ from .const import (
     CONF_PM10_NORM,
     CONF_PM25_ENTITY,
     CONF_PM25_NORM,
-    DEFAULT_PM10_NORM,
-    DEFAULT_PM25_NORM,
+    DEFAULT_PM10_DAILY_NORM,
+    DEFAULT_PM25_DAILY_NORM,
     DOMAIN,
     STORAGE_VERSION,
 )
@@ -45,6 +45,9 @@ class AirQualityHealthCoordinator(DataUpdateCoordinator[None]):
         self._store: Store[dict[str, Any]] = Store(
             hass, STORAGE_VERSION, f"{DOMAIN}_{instance_id}_store"
         )
+        self._legacy_store: Store[dict[str, Any]] = Store(
+            hass, STORAGE_VERSION, f"{DOMAIN}_store"
+        )
         self._unsubscribers: list[Any] = []
         self._data: dict[str, Any] = {
             "date": dt_util.now().date().isoformat(),
@@ -66,6 +69,11 @@ class AirQualityHealthCoordinator(DataUpdateCoordinator[None]):
     async def async_initialize(self) -> None:
         """Load state and start listeners."""
         stored = await self._store.async_load()
+        if not isinstance(stored, dict):
+            stored = await self._legacy_store.async_load()
+            if isinstance(stored, dict):
+                _LOGGER.debug("Loaded legacy store data for %s", self.cfg.pm10_entity)
+
         if isinstance(stored, dict):
             self._data.update(stored)
 
